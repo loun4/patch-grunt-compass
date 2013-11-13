@@ -1,10 +1,10 @@
-Index: assemble-test/test-grunt/node_modules/grunt-contrib-compass/tasks/compass.js
+Index: node_modules/grunt-contrib-compass/tasks/compass.js
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- assemble-test/test-grunt/node_modules/grunt-contrib-compass/tasks/compass.js	(date 1384381644000)
-+++ assemble-test/test-grunt/node_modules/grunt-contrib-compass/tasks/compass.js	(revision )
+--- node_modules/grunt-contrib-compass/tasks/compass.js	(date 1384381644000)
++++ node_modules/grunt-contrib-compass/tasks/compass.js	(revision )
 @@ -42,11 +42,6 @@
      var options = this.options();
      var cb = this.async();
