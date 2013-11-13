@@ -3,65 +3,17 @@ IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- assemble-test/test-grunt/node_modules/grunt-contrib-compass/tasks/compass.js	(date 1383863907000)
+--- assemble-test/test-grunt/node_modules/grunt-contrib-compass/tasks/compass.js	(date 1384381644000)
 +++ assemble-test/test-grunt/node_modules/grunt-contrib-compass/tasks/compass.js	(revision )
-@@ -2,7 +2,7 @@
-  * grunt-contrib-compass
-  * http://gruntjs.com/
-  *
-- * Copyright (c) 2012 Sindre Sorhus, contributors
-+ * Copyright (c) 2013 Sindre Sorhus, contributors
-  * Licensed under the MIT license.
-  */
- 
-@@ -16,10 +16,8 @@
-       cmd: args.shift(),
-       args: args
-     }, function (err, result, code) {
--      var success = code === 0;
--
-       if (code === 127) {
--        return grunt.warn(
-+        grunt.warn(
-           'You need to have Ruby and Compass installed ' +
-           'and in your system PATH for this task to work. ' +
-           'More info: https://github.com/gruntjs/grunt-contrib-compass'
-@@ -30,11 +28,11 @@
-       // on stderr when it has nothing to compile.
-       // https://github.com/chriseppstein/compass/issues/993
-       // Don't fail the task in this situation.
--      if (code === 1 && /Nothing to compile/g.test(result.stderr)) {
--        success = true;
-+      if (code === 1 && !/Nothing to compile/g.test(result.stderr)) {
-+        grunt.warn('↑');
-       }
- 
--      cb(success);
-+      cb();
-     });
-     child.stdout.pipe(process.stdout);
-     child.stderr.pipe(process.stderr);
-@@ -43,6 +41,11 @@
-   grunt.registerMultiTask('compass', 'Compile Sass to CSS using Compass', function () {
+@@ -42,11 +42,6 @@
      var options = this.options();
      var cb = this.async();
-+
-+
-+    // create a function to retroactively add a banner to the top of the
-+    // generated files, if specified
-+    var bannerCallback = compass.buildBannerCallback(grunt, options);
-     // create a temporary config file if there are 'raw' options or
-     // settings not supported as CLI arguments
-     var configContext = compass.buildConfigContext(options);
-@@ -58,7 +61,10 @@
-         args.push('--config', path);
-       }
  
--      compile(args, cb);
-+      compile(args, function () {
-+        bannerCallback();
-+        cb();
-+      });
-     });
-   });
- };
+-    // display compilation time
+-    if (!options.clean) {
+-      options.time = true;
+-    }
+-
+     // create a function to retroactively add a banner to the top of the
+     // generated files, if specified
+     var bannerCallback = compass.buildBannerCallback(grunt, options);
